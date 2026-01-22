@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -57,4 +61,23 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+
+    //Hilt Dependencies
+    kapt(libs.androidx.hilt.hilt.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Lifecycle Dependencies
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    //Retrofit Dependencies
+
+    //Room Dependencies
+
+    //Koil Dependency
+
 }
