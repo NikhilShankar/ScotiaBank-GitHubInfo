@@ -1,4 +1,4 @@
-#### ScotiaBank - GithubInfo Repo Documentation
+## ScotiaBank - GithubInfo Repo Documentation
 
 ### Main Screen
 
@@ -10,6 +10,9 @@
 - A technical decision was taken to not implement pagination since for most users the number of repos will
   will be less than 100 and also due to another constraint of finding the total forks across all repositories to assign 
   a star badge to the user in the detail screen and to display the total forks.
+
+#### Main Screen Loading Indicator
+- A basic circular indicator is used for now. We can implement a shimmer modifier for better UI/UX and to improve perceived delay in loading of items.
 
 ### Details Screen
 
