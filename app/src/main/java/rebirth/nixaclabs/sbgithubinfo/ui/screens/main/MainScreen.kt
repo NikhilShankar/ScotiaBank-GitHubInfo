@@ -50,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -106,7 +107,7 @@ fun MainScreen(
             )
 
             if (state.userError != null) {
-                ErrorText(message = state.userError!!)
+                ErrorText(message = stringResource(R.string.main_screen_user_info_failed))
             }
 
             if (state.isLoadingUser) {
@@ -118,7 +119,7 @@ fun MainScreen(
             }
 
             if (state.reposError != null) {
-                ErrorText(message = state.reposError!!)
+                ErrorText(message = stringResource(R.string.main_screen_repo_details_failed))
             }
 
             if (state.isLoadingRepos && state.repos.isEmpty()) {
@@ -299,6 +300,7 @@ private fun ErrorText(message: String) {
     Text(
         text = message,
         color = MaterialTheme.colorScheme.error,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 64.dp, vertical = 16.dp)
     )
 }

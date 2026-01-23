@@ -46,14 +46,16 @@ class NetworkGithubDataSource @Inject constructor(
     }
 
     private suspend fun fetchPageWithRetry(userId: String, page: Int): List<GithubRepoDetails>? {
-        var lastException: Exception? = null
 
         repeat(MAX_RETRIES) { attempt ->
             try {
+                /**
+                 * Added filter for private repos as per the requirement.
+                 * So only public repos will be displayed.
+                 */
                 return githubApiService.getUserRepos(userId, page, PER_PAGE)
-                    .map { it.toDomain() }
+                    .filter { it.isPrivate == false }.map { it.toDomain() }
             } catch (e: Exception) {
-                lastException = e
                 if (attempt < MAX_RETRIES - 1) {
                     // Exponential backoff: 1s, 2s, 4s
                     val backoffMs = INITIAL_BACKOFF_MS * (1L shl attempt).coerceAtMost(MAXIMUM_BACKOFF_MS)

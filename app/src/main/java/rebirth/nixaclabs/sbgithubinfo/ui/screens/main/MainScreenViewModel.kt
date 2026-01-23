@@ -1,5 +1,6 @@
 package rebirth.nixaclabs.sbgithubinfo.ui.screens.main
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

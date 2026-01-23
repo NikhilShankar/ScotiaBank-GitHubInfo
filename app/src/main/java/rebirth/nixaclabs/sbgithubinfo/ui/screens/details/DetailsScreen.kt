@@ -34,7 +34,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rebirth.nixaclabs.sbgithubinfo.R
@@ -59,7 +61,7 @@ fun DetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(repo?.name ?: "Repository Details") },
+                title = { Text( "Repository Details") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -141,14 +143,14 @@ fun DetailsScreen(
                             Text(
                                 text = stringResource(R.string.details_screen_star_badge),
                                 style = MaterialTheme.typography.labelMedium.copy(
-                                    color = StarBadgeGold,
+                                    color = TextBlack,
                                     fontWeight = FontWeight.Bold
                                 )
                             )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Card(
                     modifier = Modifier
@@ -161,6 +163,24 @@ fun DetailsScreen(
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
+                        if(repo.name.isNotBlank()) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = repo.name,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    color = TextBlack,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HorizontalDivider(color = Color.LightGray, thickness = 2.dp)
+                            Spacer(modifier = Modifier.height(24.dp))
+
+
+                        }
+
                         DetailSectionHeader(text = stringResource(R.string.details_screen_description_label))
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(

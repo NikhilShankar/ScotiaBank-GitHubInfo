@@ -6,9 +6,12 @@
     <string name="main_screen_title_name">Take Home</string>
     <string name="main_screen_text_field_label">Enter a github user id</string>
     <string name="main_screen_search_button_text">SEARCH</string>
+    <string name="main_screen_user_info_failed">Oh Snap ! Couldn\'t fetch User details !</string>
+    <string name="main_screen_repo_details_failed">Oh Snap ! Couldn\'t fetch Repo details !</string>
 
 
-<!--  Details Screen   -->
+
+    <!--  Details Screen   -->
     <string name="details_screen_description_label">Description</string>
     <string name="details_screen_updated_at_label">Last Updated</string>
     <string name="details_screen_stargazers_label">Stargazers</string>
@@ -17,5 +20,7 @@
     <string name="details_screen_no_description">No description available</string>
     <string name="details_screen_star_badge">Star Badge</string>
 
+
+<!--    -->
 
 </resources>

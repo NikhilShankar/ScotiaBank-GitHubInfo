@@ -21,7 +21,9 @@ data class GithubRepoDto(
     @SerialName("watchers_count")
     val watchersCount: Int?,
     @SerialName("open_issues_count")
-    val openIssuesCount: Int?
+    val openIssuesCount: Int?,
+    @SerialName("private")
+    val isPrivate: Boolean? = false
 ) {
     fun toDomain(): GithubRepoDetails {
         return GithubRepoDetails(
