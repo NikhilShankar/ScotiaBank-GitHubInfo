@@ -5,7 +5,7 @@
 - This app follows MVI with repository pattern.
 - Compose is used for creating the UI and hence the decision to choose MVI
 - By exposing onEvent method in the root composable and by updating state only in the view model we enforce Uni Directional Data flow which removes a lot of ambiguity and confusion.
-- The state is defined and trickles down to individual composables and events are propogated up to the root composable which invokes view model.
+- The state is defined and trickles down to individual composables and events are propagated up to the root composable which invokes view model.
 - By following repository pattern we have clearly segregated data source repository and view model.
 - The functionality was simple enough to avoid usage of UseCases which was thought of initially but later dropped as it would be over engineering.
 - We can introduce use case layers easily at a later point if needed and we will conform to Clean Architecture when necessary.
@@ -15,7 +15,7 @@
 
 - Enter a github user id
 - Search button
-- Displays user avatar and user name folowed by a list of repos
+- Displays user avatar and user name followed by a list of repos
 - If the user has more than 100 repos the network layer calls the paginated api until 
   all repositories are fetched. 
 - A technical decision was taken to not implement pagination since for most users the number of repos will
@@ -45,7 +45,7 @@
 
 #### **UI Tests**
 - A wrapper root composable was used which holds the reference of the view model. No other composable down the semantic tree holds a reference to the view model. This refactoring made it easy to test UI by just mocking state.
-- Similar apporach was taken to test the Detail Screen and focus was given for testing the badge display scenario wherein total forks were less or above 5000.
+- Similar approach was taken to test the Detail Screen and focus was given for testing the badge display scenario wherein total forks were less or above 5000.
 
 ### **Localization**
 - In order to support localization care have been given to not add any hardcoded strings inside code. Instead
