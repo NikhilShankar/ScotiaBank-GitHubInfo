@@ -8,7 +8,10 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import rebirth.nixaclabs.sbgithubinfo.data.repository.GithubRepositoryImpl
 import rebirth.nixaclabs.sbgithubinfo.data.source.remote.GithubApiService
+import rebirth.nixaclabs.sbgithubinfo.data.source.remote.NetworkGithubDataSource
+import rebirth.nixaclabs.sbgithubinfo.domain.repository.GithubDetailsRepository
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
@@ -52,5 +55,22 @@ object NetworkModule {
     @Singleton
     fun provideGithubApiService(retrofit: Retrofit): GithubApiService {
         return retrofit.create(GithubApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @NetworkDataSource
+    fun provideNetworkRepository(
+        networkDataSource: NetworkGithubDataSource
+    ): GithubDetailsRepository {
+        return GithubRepositoryImpl(networkDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGithubRepository(
+        @NetworkDataSource networkRepository: GithubDetailsRepository
+    ): GithubDetailsRepository {
+        return networkRepository
     }
 }

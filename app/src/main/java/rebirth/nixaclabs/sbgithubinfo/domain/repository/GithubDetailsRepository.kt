@@ -7,8 +7,8 @@ import rebirth.nixaclabs.sbgithubinfo.networking.SBResponse
 
 interface GithubDetailsRepository {
 
-    fun getUserInfo(): Flow<SBResponse<GithubUser>>
+    fun getUserInfo(userId: String): Flow<SBResponse<GithubUser>>
 
-    fun getRepoList(): Flow<SBResponse<List<GithubRepoDetails>>>
+    fun getRepoList(userId: String): Flow<SBResponse<List<GithubRepoDetails>>>
 
 }
