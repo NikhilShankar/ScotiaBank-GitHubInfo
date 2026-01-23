@@ -97,7 +97,7 @@ class MainScreenViewModel @Inject constructor(
      * the error from the typo api call will be returning after exponential backoff at a later point and
      * the error will be shown along with the list of repos for the correct user.
      *
-     * To avoid this reference to the coroutine job is kept and subsequent calls to fetch user or repo would first cancel any
+     * To avoid this, reference to the coroutine job is kept and subsequent calls to fetch user or repo would first cancel any
      * existing jobs and then call the new api with the new arguments.
      */
     var fetchReposJob: Job? = null
