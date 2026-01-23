@@ -77,3 +77,4 @@ all strings are defined and referred from strings.xml
 - Add Multipane support
 - Add dark mode support
 - Add code coverage report
+- Implement mock data source ( Right now its empty and named qualifier defined for it is not used anywhere ) for quick testing of flows even when offline
