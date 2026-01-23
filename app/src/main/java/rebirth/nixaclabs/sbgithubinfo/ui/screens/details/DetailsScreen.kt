@@ -44,20 +44,40 @@ import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreenViewModel
 import rebirth.nixaclabs.sbgithubinfo.ui.theme.Pink80
 import rebirth.nixaclabs.sbgithubinfo.ui.theme.StarBadgeGold
 import rebirth.nixaclabs.sbgithubinfo.ui.theme.TextBlack
+import androidx.compose.ui.platform.testTag
+import rebirth.nixaclabs.sbgithubinfo.domain.model.GithubRepoDetails
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Wrapper composable that holds the ViewModel reference.
+ * The actual UI is in DetailsScreen composable which can be tested independently.
+ */
 @Composable
-fun DetailsScreen(
+fun DetailsScreenUI(
     viewModel: MainScreenViewModel,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
-    val repo = state.selectedRepo
+    DetailsScreen(
+        repo = state.selectedRepo,
+        totalForks = state.totalForks,
+        hasStarBadge = state.hasStarBadge,
+        onBackClick = onBackClick
+    )
+}
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailsScreen(
+    repo: GithubRepoDetails?,
+    totalForks: Int,
+    hasStarBadge: Boolean,
+    onBackClick: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -112,40 +132,46 @@ fun DetailsScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            if (state.hasStarBadge) {
+                            if (hasStarBadge) {
                                 Icon(
                                     imageVector = Icons.Filled.Star,
                                     contentDescription = stringResource(R.string.details_screen_star_badge),
                                     tint = StarBadgeGold,
-                                    modifier = Modifier.size(28.dp)
+                                    modifier = Modifier
+                                        .size(28.dp)
+                                        .testTag("star_badge")
                                 )
                             }
                             Text(
-                                text = state.totalForks.toString(),
+                                text = totalForks.toString(),
                                 style = MaterialTheme.typography.headlineMedium.copy(
-                                    color = if (state.hasStarBadge) StarBadgeGold else TextBlack,
+                                    color = if (hasStarBadge) StarBadgeGold else TextBlack,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 28.sp
-                                )
+                                ),
+                                modifier = Modifier.testTag("total_forks_value")
                             )
-                            if (state.hasStarBadge) {
+                            if (hasStarBadge) {
                                 Icon(
                                     imageVector = Icons.Filled.Star,
                                     contentDescription = stringResource(R.string.details_screen_star_badge),
                                     tint = StarBadgeGold,
-                                    modifier = Modifier.size(28.dp)
+                                    modifier = Modifier
+                                        .size(28.dp)
+                                        .testTag("star_badge")
                                 )
                             }
                         }
 
-                        if (state.hasStarBadge) {
+                        if (hasStarBadge) {
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = stringResource(R.string.details_screen_star_badge),
                                 style = MaterialTheme.typography.labelMedium.copy(
                                     color = TextBlack,
                                     fontWeight = FontWeight.Bold
-                                )
+                                ),
+                                modifier = Modifier.testTag("star_badge_label")
                             )
                         }
                     }
@@ -257,7 +283,8 @@ private fun DetailSectionHeader(text: String) {
 @Composable
 private fun StatItem(
     label: String,
-    value: String
+    value: String,
+    testTag: String = ""
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -268,7 +295,8 @@ private fun StatItem(
                 color = TextBlack,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
-            )
+            ),
+            modifier = if (testTag.isNotEmpty()) Modifier.testTag(testTag) else Modifier
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(

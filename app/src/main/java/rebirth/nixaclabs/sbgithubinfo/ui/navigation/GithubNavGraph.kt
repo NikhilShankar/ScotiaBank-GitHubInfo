@@ -7,8 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import rebirth.nixaclabs.sbgithubinfo.ui.screens.details.DetailsScreen
-import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreen
+import rebirth.nixaclabs.sbgithubinfo.ui.screens.details.DetailsScreenUI
 import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreenUI
 import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreenViewModel
 
@@ -48,7 +47,7 @@ fun GithubNavGraph(navController: NavHostController) {
                 }
                 val viewModel: MainScreenViewModel = hiltViewModel(parentEntry)
 
-                DetailsScreen(
+                DetailsScreenUI(
                     viewModel = viewModel,
                     onBackClick = {
                         navController.popBackStack()
