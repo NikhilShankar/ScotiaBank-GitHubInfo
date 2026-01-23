@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">ScotiaBank-GitHubInfo</string>
+
+
+<!--  Main Screen   -->
+    <string name="main_screen_title_name">Take Home</string>
+    <string name="main_screen_text_field_label">Enter a github user id</string>
+    <string name="main_screen_search_button_text">SEARCH</string>
+
+
+
+
 </resources>
