@@ -141,6 +141,7 @@ class NetworkGithubDataSourceTest {
 
     /**
      * On a failure it should emit error only if the third attempt also fails
+     * and assert that repofetch exception is the specific exception thrown
      */
     @Test
     fun `getUserReposFlow should throw RepoFetchException after max retries exhausted`() = runTest {
