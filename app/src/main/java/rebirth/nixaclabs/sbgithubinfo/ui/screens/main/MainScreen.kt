@@ -8,6 +8,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -194,6 +195,7 @@ private fun SearchSection(
     ) {
 
         val interactionSource = remember { MutableInteractionSource() }
+        val isFocused by interactionSource.collectIsFocusedAsState()
 
         BasicTextField(
             value = query,
@@ -213,8 +215,8 @@ private fun SearchSection(
                 interactionSource = interactionSource,
                 label = { Text(
                     stringResource(R.string.main_screen_text_field_label),
-                    modifier = Modifier.padding(top = 12.dp, bottom = 0.dp, start = 0.dp, end = 0.dp)) },
-                contentPadding = PaddingValues(start = 0.dp, end = 0.dp, top = 16.dp, bottom = 4.dp),
+                    modifier = Modifier.padding(top = 0.dp, bottom = if(isFocused) 12.dp else 0.dp, start = 0.dp, end = 0.dp)) },
+                contentPadding = PaddingValues(start = 0.dp, end = 0.dp, top = 0.dp, bottom = if(isFocused) 4.dp else 0.dp),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
