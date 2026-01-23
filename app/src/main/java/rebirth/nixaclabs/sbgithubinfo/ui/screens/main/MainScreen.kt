@@ -227,7 +227,7 @@ private fun UserInfoSection(user: GithubUser) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = user.name,
-            style = MaterialTheme.typography.titleMedium.copy(color = TextBlack),
+            style = MaterialTheme.typography.titleMedium.copy(color = TextBlack, fontSize = 14.sp),
             fontWeight = FontWeight.Bold
         )
     }
@@ -268,14 +268,14 @@ private fun RepoItem(
         ) {
             Text(
                 text = repo.name,
-                style = MaterialTheme.typography.titleMedium.copy(color = TextBlack),
+                style = MaterialTheme.typography.titleMedium.copy(color = TextBlack, fontSize = 16.sp),
                 fontWeight = FontWeight.Bold
             )
             if (repo.description.isNotBlank()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = repo.description,
-                    style = MaterialTheme.typography.bodyMedium.copy(color = TextBlack),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = TextBlack, fontSize = 12.sp),
                 )
             }
         }
