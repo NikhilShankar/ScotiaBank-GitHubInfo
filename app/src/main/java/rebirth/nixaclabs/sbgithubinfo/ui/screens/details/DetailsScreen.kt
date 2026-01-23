@@ -46,6 +46,7 @@ import rebirth.nixaclabs.sbgithubinfo.ui.theme.StarBadgeGold
 import rebirth.nixaclabs.sbgithubinfo.ui.theme.TextBlack
 import androidx.compose.ui.platform.testTag
 import rebirth.nixaclabs.sbgithubinfo.domain.model.GithubRepoDetails
+import rebirth.nixaclabs.sbgithubinfo.utils.formatDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -224,15 +225,17 @@ fun DetailsScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         // Last Updated Section
-                        DetailSectionHeader(text = stringResource(R.string.details_screen_updated_at_label))
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = formatDate(repo.updatedAt),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = TextBlack,
-                                fontSize = 14.sp
+                        repo.updatedAt.formatDate()?.let { formattedDate ->
+                            DetailSectionHeader(text = stringResource(R.string.details_screen_updated_at_label))
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = formattedDate,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    color = TextBlack,
+                                    fontSize = 14.sp
+                                )
                             )
-                        )
+                        }
 
                         Spacer(modifier = Modifier.height(16.dp))
                         HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
@@ -309,12 +312,4 @@ private fun StatItem(
     }
 }
 
-private fun formatDate(isoDateString: String): String {
-    return try {
-        val zonedDateTime = ZonedDateTime.parse(isoDateString)
-        val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' HH:mm", Locale.getDefault())
-        zonedDateTime.format(formatter)
-    } catch (e: Exception) {
-        isoDateString
-    }
-}
+

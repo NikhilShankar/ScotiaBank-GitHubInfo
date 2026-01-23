@@ -32,17 +32,12 @@
   - SharedPrefs - Since offline support was not a requirement adding RoomDB was thought of as an overkill at the moment and instead relying on shared prefs to write to a key value and then retrieve it based on the repo id was also thought about.
   - Using a shared view model - Since the entire repo details are already loaded in memory, relying on the exact same view model in the detail screen was a valid approach. The main concern was that since the app is a single activity compose based application the view model will always be in memory if its shared on activity. Instead the viewmodelstore owner was defined as the navigation graph. This way the view model will be garbage collected when the navigation graph is popped out or replaced by another one. This will be a good approach for the current situation and in future even if we have other screens or features switching to a different navigation graph would release the view model from memory. Hence it was decided to proceed with this 3rd approach of shared view model.
 
-### Design Anomalies to be addressed
-
-- The design closely resembles Material2 components and the project uses Material3 library and some of the default UI appearance 
-might seem a bit different eg. The space between the label and the bottom line in text field is a bit more than the screenshot shared in the assignment pdf.
-
-
 ### Testing
 
 #### Unit Tests
 - MockK, Google Truth and Turbine were used extensively to cover the critical logic in code especially the main view model and network data source
 - Code Coverage hasn't been checked and didn't aim for a specific code coverage percentage instead focused on getting the major functionalities under the unit test umbrella
+- Added fixture library to randomly generate data classes and dates for creating Utils test.
 
 #### UI Tests
 - A wrapper root composable was used which holds the reference of the view model. No other composable down the semantic tree holds a reference to the view model. This refactoring made it easy to test UI by just mocking state.
@@ -61,3 +56,8 @@ all strings are defined and referred from strings.xml
 ### Image Drawables
 
 - An image placeholder png is used which ideally can be replaced with a svg or webp to reduce size further.
+
+### Design Anomalies to be addressed
+
+- The design closely resembles Material2 components and the project uses Material3 library and some of the default UI appearance
+  might seem a bit different eg. The space between the label and the bottom line in text field is a bit more than the screenshot shared in the assignment pdf.
