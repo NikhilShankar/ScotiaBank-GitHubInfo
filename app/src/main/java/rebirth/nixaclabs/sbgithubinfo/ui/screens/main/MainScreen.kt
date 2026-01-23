@@ -167,7 +167,6 @@ private fun SearchSection(
             onValueChange = onQueryChange,
             modifier = Modifier.weight(1f).wrapContentHeight(),
             interactionSource = interactionSource,
-            enabled = !isLoading,
             singleLine = true,
             textStyle = TextStyle(fontSize = 16.sp)
         ) { innerTextField ->

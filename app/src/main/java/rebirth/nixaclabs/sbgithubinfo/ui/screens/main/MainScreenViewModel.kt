@@ -4,6 +4,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,8 +64,10 @@ class MainScreenViewModel @Inject constructor(
         fetchUserRepos(userId)
     }
 
+    var userInfoJob: Job? = null
     private fun fetchUserInfo(userId: String) {
-        viewModelScope.launch {
+        userInfoJob?.cancel()
+        userInfoJob = viewModelScope.launch {
             repository.getUserInfo(userId).collect { response ->
                 when (response) {
                     is SBResponse.Loading -> {
@@ -85,8 +88,22 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+
+    /**
+     * Without this job reference we wont be able to cancel
+     * api calls currently being made. This is crucial since if the user
+     * makes a typo and clicks search and immediately corrects it and clicks on search again
+     * then there is possibility that the correct api returns with the response quickly and
+     * the error from the typo api call will be returning after exponential backoff at a later point and
+     * the error will be shown along with the list of repos for the correct user.
+     *
+     * To avoid this reference to the coroutine job is kept and subsequent calls to fetch user or repo would first cancel any
+     * existing jobs and then call the new api with the new arguments.
+     */
+    var fetchReposJob: Job? = null
     private fun fetchUserRepos(userId: String) {
-        viewModelScope.launch {
+        fetchReposJob?.cancel()
+        fetchReposJob = viewModelScope.launch {
             repository.getRepoList(userId).collect { response ->
                 when (response) {
                     is SBResponse.Loading -> {
