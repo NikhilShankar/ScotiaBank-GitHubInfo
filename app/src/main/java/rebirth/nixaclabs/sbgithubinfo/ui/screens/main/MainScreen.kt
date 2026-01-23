@@ -1,5 +1,10 @@
 package rebirth.nixaclabs.sbgithubinfo.ui.screens.main
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -133,8 +138,15 @@ fun MainScreen(
                 }
             }
 
-            state.user?.let { user ->
-                UserInfoSection(user = user)
+            AnimatedVisibility(
+                visible = state.user != null && !state.isLoadingUser,
+                enter = fadeIn(animationSpec = tween(durationMillis = 1000)) +
+                        slideInVertically(animationSpec = tween(durationMillis = 1000), initialOffsetY = { 100 }),
+                exit = fadeOut(animationSpec = tween(durationMillis = 0))
+            ) {
+                state.user?.let { user ->
+                    UserInfoSection(user = user)
+                }
             }
 
             if (state.reposError != null) {
@@ -148,7 +160,12 @@ fun MainScreen(
                 }
             }
 
-            if (state.repos.isNotEmpty()) {
+            AnimatedVisibility(
+                visible = state.repos.isNotEmpty(),
+                enter = fadeIn(animationSpec = tween(durationMillis = 1000)) +
+                        slideInVertically(animationSpec = tween(durationMillis = 1000), initialOffsetY = { 100 }),
+                exit = fadeOut(animationSpec = tween(durationMillis = 0))
+            ) {
                 RepoList(
                     repos = state.repos,
                     onRepoClick = { repo ->
@@ -232,9 +249,9 @@ private fun SearchSection(
 }
 
 @Composable
-private fun UserInfoSection(user: GithubUser) {
+private fun UserInfoSection(modifier: Modifier = Modifier, user: GithubUser) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
