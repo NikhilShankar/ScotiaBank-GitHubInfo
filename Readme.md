@@ -41,3 +41,7 @@ all strings are defined and referred from strings.xml
 - A technical decision to focus on phone screens was taken even though a list-detail approach for supporting devices 
  with expanded width or foldable screens was initially thought of. This can be done in future by making use of WindowSize class 
  and by using compose list - detail component. (ListDetailPaneScaffold)
+
+### Image Drawables
+
+- An image placeholder png is used which ideally can be replaced with a svg or webp to reduce size further.
