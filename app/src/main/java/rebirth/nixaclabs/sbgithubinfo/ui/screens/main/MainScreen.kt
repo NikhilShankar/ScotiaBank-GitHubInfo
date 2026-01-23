@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -122,13 +123,13 @@ fun MainScreen(
             )
 
             if (state.userError != null) {
-                ErrorText(message = stringResource(R.string.main_screen_user_info_failed))
+                ErrorText(modifier=modifier.testTag("main_screen_user_error"), message = stringResource(R.string.main_screen_user_info_failed))
             }
 
             if (state.isLoadingUser) {
                 Spacer(Modifier.height(64.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    LoadingIndicator(Modifier.size(76.dp))
+                    LoadingIndicator(Modifier.size(76.dp).testTag("main_screen_loading_user"))
                 }
             }
 
@@ -137,13 +138,13 @@ fun MainScreen(
             }
 
             if (state.reposError != null) {
-                ErrorText(message = stringResource(R.string.main_screen_repo_details_failed))
+                ErrorText(modifier=modifier.testTag("main_screen_repos_error"), message = stringResource(R.string.main_screen_repo_details_failed))
             }
 
             if (state.isLoadingRepos && state.repos.isEmpty()) {
                 Spacer(Modifier.height(64.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    LoadingIndicator(Modifier.size(156.dp))
+                    LoadingIndicator(Modifier.size(156.dp).testTag("main_screen_loading_repos"))
                 }
             }
 
@@ -281,6 +282,7 @@ private fun RepoItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .testTag("repo_card")
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(1.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -318,11 +320,11 @@ private fun LoadingIndicator(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ErrorText(message: String) {
+private fun ErrorText(modifier: Modifier = Modifier, message: String) {
     Text(
         text = message,
         color = MaterialTheme.colorScheme.error,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 64.dp, vertical = 16.dp)
+        modifier = modifier.fillMaxWidth().padding(horizontal = 64.dp, vertical = 16.dp)
     )
 }
