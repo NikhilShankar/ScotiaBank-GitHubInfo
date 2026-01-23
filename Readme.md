@@ -65,6 +65,7 @@ all strings are defined and referred from strings.xml
 
 ### Future Improvements
 
+- Add icon 
 - Add deeplink support 
 - DetailScreen is not a standalone screen since it is coupled with MainScreenViewModel. To address this either RoomDB implementation or a simpler Shared Pref approach can be seeked. 
 - Ideally the star badge should be displayed on the main screen instead of detail screen for better UI/UX and the total forks info is ideally part of the main screen itself and placing it inside repo details is not a good placement.
