@@ -10,3 +10,5 @@ val Blue60 = Color(0xFF303F9E)
 
 
 val TextBlack = Color(0xFF6D6D6D)
+
+val StarBadgeGold = Color(color = 0xFFFFD700)

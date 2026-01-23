@@ -8,6 +8,14 @@
     <string name="main_screen_search_button_text">SEARCH</string>
 
 
+<!--  Details Screen   -->
+    <string name="details_screen_description_label">Description</string>
+    <string name="details_screen_updated_at_label">Last Updated</string>
+    <string name="details_screen_stargazers_label">Stargazers</string>
+    <string name="details_screen_forks_label">Forks</string>
+    <string name="details_screen_total_forks_label">Total Forks (All Repos)</string>
+    <string name="details_screen_no_description">No description available</string>
+    <string name="details_screen_star_badge">Star Badge</string>
 
 
 </resources>

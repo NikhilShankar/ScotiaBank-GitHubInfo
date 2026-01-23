@@ -11,6 +11,13 @@
   will be less than 100 and also due to another constraint of finding the total forks across all repositories to assign 
   a star badge to the user in the detail screen and to display the total forks.
 
+### Details Screen
+
+- 3 major approaches were thought while implementing this screen.
+  - RoomDB for saving repo details which acts as a source for the details screen wherein we pass the repoid while navigating to the details screen and we fetch the repo details from room db. 
+  - SharedPrefs - Since offline support was not a requirement adding RoomDB was thought of as an overkill at the moment and instead relying on shared prefs to write to a key value and then retrieve it based on the repo id was also thought about.
+  - Using a shared view model - Since the entire repo details are already loaded in memory, relying on the exact same view model in the detail screen was a valid approach. The main concern was that since the app is a single activity compose based application the view model will always be in memory if its shared on activity. Instead the viewmodelstore owner was defined as the navigation graph. This way the view model will be garbage collected when the navigation graph is popped out or replaced by another one. This will be a good approach for the current situation and in future even if we have other screens or features switching to a different navigation graph would release the view model from memory. Hence it was decided to proceed with this 3rd approach of shared view model.
+
 ### Design Anomalies to be addressed
 
 - The design closely resembles Material2 components and the project uses Material3 library and some of the default UI appearance 

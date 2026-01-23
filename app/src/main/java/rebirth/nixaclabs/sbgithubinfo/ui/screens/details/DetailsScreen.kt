@@ -1,11 +1,25 @@
 package rebirth.nixaclabs.sbgithubinfo.ui.screens.details
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -16,10 +30,22 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import rebirth.nixaclabs.sbgithubinfo.R
 import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreenViewModel
+import rebirth.nixaclabs.sbgithubinfo.ui.theme.Pink80
+import rebirth.nixaclabs.sbgithubinfo.ui.theme.StarBadgeGold
+import rebirth.nixaclabs.sbgithubinfo.ui.theme.TextBlack
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,20 +79,194 @@ fun DetailsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(paddingValues)
-                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             if (repo != null) {
-                Text(
-                    text = "Detail screen - To be implemented",
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                // Total Forks Card (Senior Developer Requirement)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(1.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        DetailSectionHeader(
+                            text = stringResource(R.string.details_screen_total_forks_label)
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            if (state.hasStarBadge) {
+                                Icon(
+                                    imageVector = Icons.Filled.Star,
+                                    contentDescription = stringResource(R.string.details_screen_star_badge),
+                                    tint = StarBadgeGold,
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
+                            Text(
+                                text = state.totalForks.toString(),
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    color = if (state.hasStarBadge) StarBadgeGold else TextBlack,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 28.sp
+                                )
+                            )
+                            if (state.hasStarBadge) {
+                                Icon(
+                                    imageVector = Icons.Filled.Star,
+                                    contentDescription = stringResource(R.string.details_screen_star_badge),
+                                    tint = StarBadgeGold,
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
+                        }
+
+                        if (state.hasStarBadge) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = stringResource(R.string.details_screen_star_badge),
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    color = StarBadgeGold,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(1.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        DetailSectionHeader(text = stringResource(R.string.details_screen_description_label))
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = repo.description.ifBlank {
+                                stringResource(R.string.details_screen_no_description)
+                            },
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = TextBlack,
+                                fontSize = 14.sp
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Last Updated Section
+                        DetailSectionHeader(text = stringResource(R.string.details_screen_updated_at_label))
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = formatDate(repo.updatedAt),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = TextBlack,
+                                fontSize = 14.sp
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Stats Row
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            StatItem(
+                                label = stringResource(R.string.details_screen_stargazers_label),
+                                value = repo.starGazersCount.toString()
+                            )
+                            StatItem(
+                                label = stringResource(R.string.details_screen_forks_label),
+                                value = repo.forks.toString()
+                            )
+                        }
+                    }
+                }
+
+
+
             } else {
                 Text(
                     text = "No repository selected",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(16.dp)
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun DetailSectionHeader(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleSmall.copy(
+            color = Pink80,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp
+        )
+    )
+}
+
+@Composable
+private fun StatItem(
+    label: String,
+    value: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.headlineSmall.copy(
+                color = TextBlack,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium.copy(
+                color = Pink80,
+                fontWeight = FontWeight.Medium
+            )
+        )
+    }
+}
+
+private fun formatDate(isoDateString: String): String {
+    return try {
+        val zonedDateTime = ZonedDateTime.parse(isoDateString)
+        val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' HH:mm", Locale.getDefault())
+        zonedDateTime.format(formatter)
+    } catch (e: Exception) {
+        isoDateString
     }
 }
