@@ -66,6 +66,12 @@ class NetworkGithubDataSourceTest {
         }
     }
 
+
+    /**
+     * Ideally the public github api will return only public repositories.
+     * The requirement specifically asks for public repos hence added the functionality to filter private repos
+     * This is testing the same.
+     */
     @Test
     fun `getUserReposFlow should filter out private repos`() = runTest {
         val repos = listOf(
@@ -106,6 +112,11 @@ class NetworkGithubDataSourceTest {
         }
     }
 
+
+    /**
+     * This is a crucial test case which asserts if an error properly retries for atleast 2 times.
+     * If at the third attempt api succeeds then it should return success and return the repos.
+     */
     @Test
     fun `getUserReposFlow should retry with backoff on failure then succeed`() = runTest {
         val repos = listOf(createRepoDto(1), createRepoDto(2))
@@ -127,6 +138,10 @@ class NetworkGithubDataSourceTest {
         }
     }
 
+
+    /**
+     * On a failure it should emit error only if the third attempt also fails
+     */
     @Test
     fun `getUserReposFlow should throw RepoFetchException after max retries exhausted`() = runTest {
         coEvery { apiService.getUserRepos("testuser", 1, 100) } throws RuntimeException("Network error")
