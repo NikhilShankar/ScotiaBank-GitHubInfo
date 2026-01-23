@@ -10,9 +10,7 @@ plugins {
 
 android {
     namespace = "rebirth.nixaclabs.sbgithubinfo"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "rebirth.nixaclabs.sbgithubinfo"
