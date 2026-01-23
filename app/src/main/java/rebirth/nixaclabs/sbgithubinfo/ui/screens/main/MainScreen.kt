@@ -62,12 +62,15 @@ import rebirth.nixaclabs.sbgithubinfo.domain.model.GithubUser
 import rebirth.nixaclabs.sbgithubinfo.ui.theme.Pink80
 import rebirth.nixaclabs.sbgithubinfo.ui.theme.TextBlack
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+/**
+ * A wrapper main screen UI which holds reference to the viewmodel
+ * The actual UI for main screen is defined in the MainScreen composable
+ * This way the MainScreen composable can be UI tested without view model dependency
+ * and just by passing appropriate state to the main screen composable.
+ */
 @Composable
-fun MainScreen(
-    viewModel: MainScreenViewModel,
-    onNavigateToDetail: () -> Unit
-) {
+fun MainScreenUI(modifier: Modifier = Modifier, viewModel: MainScreenViewModel, onNavigateToDetail: () -> Unit) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -82,7 +85,18 @@ fun MainScreen(
             }
         }
     }
+    MainScreen(modifier, state) { event ->
+        viewModel.onEvent(event)
+    }
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    state: MainScreenState,
+    onEvent: (MainScreenEvent) -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -95,15 +109,15 @@ fun MainScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(Color.White)
                 .padding(paddingValues)
         ) {
             SearchSection(
                 query = state.searchQuery,
-                onQueryChange = { viewModel.onEvent(MainScreenEvent.OnSearchQueryChanged(it)) },
-                onSearchClick = { viewModel.onEvent(MainScreenEvent.OnSearchClicked) },
+                onQueryChange = { onEvent(MainScreenEvent.OnSearchQueryChanged(it)) },
+                onSearchClick = { onEvent(MainScreenEvent.OnSearchClicked) },
                 isLoading = state.isLoadingUser || state.isLoadingRepos
             )
 
@@ -137,7 +151,7 @@ fun MainScreen(
                 RepoList(
                     repos = state.repos,
                     onRepoClick = { repo ->
-                        viewModel.onEvent(MainScreenEvent.OnRepoSelected(repo))
+                        onEvent(MainScreenEvent.OnRepoSelected(repo))
                     },
                     modifier = Modifier.weight(1f)
                 )

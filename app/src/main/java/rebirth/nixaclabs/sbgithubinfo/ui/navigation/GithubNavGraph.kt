@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import rebirth.nixaclabs.sbgithubinfo.ui.screens.details.DetailsScreen
 import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreen
+import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreenUI
 import rebirth.nixaclabs.sbgithubinfo.ui.screens.main.MainScreenViewModel
 
 object NavRoutes {
@@ -33,7 +34,7 @@ fun GithubNavGraph(navController: NavHostController) {
                 }
                 val viewModel: MainScreenViewModel = hiltViewModel(parentEntry)
 
-                MainScreen(
+                MainScreenUI(
                     viewModel = viewModel,
                     onNavigateToDetail = {
                         navController.navigate(NavRoutes.DETAIL)

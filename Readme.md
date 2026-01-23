@@ -1,5 +1,16 @@
 ## ScotiaBank - GithubInfo Repo Documentation
 
+### Core Architecture
+
+- This app follows MVI with repository pattern.
+- Compose is used for creating the UI and hence the decision to choose MVI
+- By exposing onEvent method in the root composable and by updating state only in the view model we enforce Uni Directional Data flow which removes a lot of ambiguity and confusion.
+- The state is defined and trickles down to individual composables and events are propogated up to the root composable which invokes view model.
+- By following repository pattern we have clearly segregated data source repository and view model.
+- The functionality was simple enough to avoid usage of UseCases which was though of initially but later dropped as it would be over engineering.
+- We can introduce use case layers easily at a later point if needed and we will conform to Clean Architecture when necessary.
+- Hilt was used for dependency injection.
+
 ### Main Screen
 
 - Enter a github user id
@@ -29,7 +40,12 @@ might seem a bit different eg. The space between the label and the bottom line i
 
 ### Testing
 
+#### Unit Tests
+- MockK, Google Truth and Turbine were used extensively to cover the critical logic in code especially the main view model and network data source
+- Code Coverage hasn't been checked and didn't aim for a specific code coverage percentage instead focused on getting the major functionalities under the unit test umbrella
 
+#### UI Tests
+- A wrapper root composable was used which holds the reference of the view model. No other composable down the semantic tree holds a reference to the view model. This refactoring made it easy to test UI by just mocking state.
 
 ### Localization
 
