@@ -61,3 +61,15 @@ all strings are defined and referred from strings.xml
 
 - The design closely resembles Material2 components and the project uses Material3 library and some of the default UI appearance
   might seem a bit different eg. The space between the label and the bottom line in text field is a bit more than the screenshot shared in the assignment pdf.
+
+
+### Future Improvements
+
+- Add deeplink support 
+- DetailScreen is not a standalone screen since it is coupled with MainScreenViewModel. To address this either RoomDB implementation or a simpler Shared Pref approach can be seeked. 
+- Ideally the star badge should be displayed on the main screen instead of detail screen for better UI/UX and the total forks info is ideally part of the main screen itself and placing it inside repo details is not a good placement.
+- We can write a github action to run the unit test cases on push to master or merging of pull request to master
+- Dependencies in the build.gradle is not completely moved to libs.versions.toml
+- Add Multipane support
+- Add dark mode support
+- Add code coverage report
