@@ -111,7 +111,10 @@ fun MainScreen(
             }
 
             if (state.isLoadingUser) {
-                LoadingIndicator()
+                Spacer(Modifier.height(64.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    LoadingIndicator(Modifier.size(76.dp))
+                }
             }
 
             state.user?.let { user ->
@@ -123,7 +126,10 @@ fun MainScreen(
             }
 
             if (state.isLoadingRepos && state.repos.isEmpty()) {
-                LoadingIndicator()
+                Spacer(Modifier.height(64.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    LoadingIndicator(Modifier.size(156.dp))
+                }
             }
 
             if (state.repos.isNotEmpty()) {
@@ -284,9 +290,9 @@ private fun RepoItem(
 }
 
 @Composable
-private fun LoadingIndicator() {
+private fun LoadingIndicator(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
