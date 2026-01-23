@@ -1,5 +1,10 @@
 package rebirth.nixaclabs.sbgithubinfo.ui.screens.details
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,8 +33,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -79,6 +88,12 @@ fun DetailsScreen(
     hasStarBadge: Boolean,
     onBackClick: () -> Unit
 ) {
+    // Local state to trigger enter animation on first composition
+    var isVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        isVisible = true
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -109,7 +124,6 @@ fun DetailsScreen(
             if (repo != null) {
                 // Total Forks Card (Senior Developer Requirement)
                 Spacer(modifier = Modifier.height(16.dp))
-
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -177,83 +191,91 @@ fun DetailsScreen(
                         }
                     }
                 }
+
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    shape = RoundedCornerShape(1.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                AnimatedVisibility(
+                    visible = isVisible,
+                    enter = fadeIn(animationSpec = tween(durationMillis = 1000)) +
+                            slideInVertically(animationSpec = tween(durationMillis = 1000), initialOffsetY = { 100 }),
+                    exit = fadeOut(animationSpec = tween(durationMillis = 0))
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        shape = RoundedCornerShape(1.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
-                        if(repo.name.isNotBlank()) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = repo.name,
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = TextBlack,
-                                    fontSize = 24.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            if (repo.name.isNotBlank()) {
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = repo.name,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = TextBlack,
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
                                 )
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
-                            HorizontalDivider(color = Color.LightGray, thickness = 2.dp)
-                            Spacer(modifier = Modifier.height(24.dp))
+                                Spacer(modifier = Modifier.height(12.dp))
+                                HorizontalDivider(color = Color.LightGray, thickness = 2.dp)
+                                Spacer(modifier = Modifier.height(24.dp))
 
 
-                        }
+                            }
 
-                        DetailSectionHeader(text = stringResource(R.string.details_screen_description_label))
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = repo.description.ifBlank {
-                                stringResource(R.string.details_screen_no_description)
-                            },
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = TextBlack,
-                                fontSize = 14.sp
-                            )
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Last Updated Section
-                        repo.updatedAt.formatDate()?.let { formattedDate ->
-                            DetailSectionHeader(text = stringResource(R.string.details_screen_updated_at_label))
+                            DetailSectionHeader(text = stringResource(R.string.details_screen_description_label))
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = formattedDate,
+                                text = repo.description.ifBlank {
+                                    stringResource(R.string.details_screen_no_description)
+                                },
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = TextBlack,
                                     fontSize = 14.sp
                                 )
                             )
-                        }
 
-                        Spacer(modifier = Modifier.height(16.dp))
-                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                        Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
+                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                            Spacer(modifier = Modifier.height(16.dp))
 
-                        // Stats Row
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            StatItem(
-                                label = stringResource(R.string.details_screen_stargazers_label),
-                                value = repo.starGazersCount.toString()
-                            )
-                            StatItem(
-                                label = stringResource(R.string.details_screen_forks_label),
-                                value = repo.forks.toString()
-                            )
+                            // Last Updated Section
+                            repo.updatedAt.formatDate()?.let { formattedDate ->
+                                DetailSectionHeader(text = stringResource(R.string.details_screen_updated_at_label))
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = formattedDate,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = TextBlack,
+                                        fontSize = 14.sp
+                                    )
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Stats Row
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                StatItem(
+                                    label = stringResource(R.string.details_screen_stargazers_label),
+                                    value = repo.starGazersCount.toString()
+                                )
+                                StatItem(
+                                    label = stringResource(R.string.details_screen_forks_label),
+                                    value = repo.forks.toString()
+                                )
+                            }
                         }
                     }
                 }

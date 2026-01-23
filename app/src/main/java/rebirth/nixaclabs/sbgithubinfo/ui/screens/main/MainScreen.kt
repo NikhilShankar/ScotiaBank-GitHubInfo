@@ -213,8 +213,8 @@ private fun SearchSection(
                 interactionSource = interactionSource,
                 label = { Text(
                     stringResource(R.string.main_screen_text_field_label),
-                    modifier = Modifier.padding(0.dp)) },
-                contentPadding = PaddingValues(start = 0.dp, end = 0.dp, top = 4.dp, bottom = 4.dp),
+                    modifier = Modifier.padding(top = 12.dp, bottom = 0.dp, start = 0.dp, end = 0.dp)) },
+                contentPadding = PaddingValues(start = 0.dp, end = 0.dp, top = 16.dp, bottom = 4.dp),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
